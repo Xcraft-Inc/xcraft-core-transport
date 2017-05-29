@@ -1,0 +1,34 @@
+{
+  "name": "xcraft-core-transport",
+  "version": "0.1.0",
+  "description": "Xcraft bus transport backends",
+  "main": "./index.js",
+  "engines": {
+    "node": ">=6"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "xcraft",
+    "bus",
+    "transport"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Xcraft-Inc/xcraft-core-transport.git"
+  },
+  "dependencies": {
+    "axon": "^2.0.3",
+    "watt": "^3.3.0"
+  },
+  "author": "Mathieu Schroeter",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Xcraft-Inc/xcraft-core-transport/issues"
+  },
+  "homepage": "https://github.com/Xcraft-Inc/xcraft-core-transport#readme",
+  "devDependencies": {
+    "xcraft-dev-rules": "^0.1.17"
+  }
+}
