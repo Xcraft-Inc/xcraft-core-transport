@@ -22,12 +22,12 @@ describe ('', function () {
     });
 
     server.start ({host: '127.0.0.1', port: 3334}, () => {
-      clientEe.connect ('ee', () => {
+      clientEe.connect ('ee', {}, () => {
         clientEe.send ('test-ee');
       });
 
       id = 'axon';
-      clientAxon.connect ('axon', 3334, '127.0.0.1', () => {
+      clientAxon.connect ('axon', {port: 3334, host: '127.0.0.1'}, () => {
         clientAxon.send ('test-axon');
       });
     });
