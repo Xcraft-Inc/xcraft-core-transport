@@ -2,7 +2,7 @@
   "name": "xcraft-core-transport",
   "version": "0.1.0",
   "description": "Xcraft bus transport backends",
-  "main": "./index.js",
+  "main": "./lib/index.js",
   "engines": {
     "node": ">=6"
   },
@@ -17,6 +17,11 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Xcraft-Inc/xcraft-core-transport.git"
+  },
+  "config": {
+    "xcraft": {
+      "commands": true
+    }
   },
   "dependencies": {
     "axon": "^2.0.3",
