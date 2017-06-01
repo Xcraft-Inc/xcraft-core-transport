@@ -5,12 +5,12 @@ const Router = require ('../lib/router.js');
 
 const xLog = require ('xcraft-core-log') ('test', null);
 
-describe ('', function () {
+describe ('pushpull', function () {
   const server = new Router ('pull', xLog);
   const clientEe = new Router ('push', xLog);
   const clientAxon = new Router ('push', xLog);
 
-  it ('#', function (done) {
+  it ('#start and connect', function (done) {
     let id = 'ee';
 
     server.on ('message', msg => {
