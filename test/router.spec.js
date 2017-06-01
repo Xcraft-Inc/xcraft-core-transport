@@ -17,6 +17,9 @@ describe ('pushpull', function () {
       console.log (id);
       expect (msg).to.be.eql (`test-${id}`);
       if (id !== 'ee') {
+        clientEe.stop ();
+        clientAxon.stop ();
+        server.stop ();
         done ();
       }
     });
