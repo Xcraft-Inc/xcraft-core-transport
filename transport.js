@@ -23,7 +23,7 @@ cmd.status = function (msg, resp) {
   });
 
   resp.events.send ('transport.status', status);
-  resp.events.send ('transport.status.finished');
+  resp.events.send (`transport.status.${msg.id}.finished`);
 };
 
 /**
