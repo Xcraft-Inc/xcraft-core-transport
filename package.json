@@ -25,8 +25,8 @@
   },
   "dependencies": {
     "axon": "^2.0.3",
-    "escape-regexp": "0.0.1",
-    "watt": "^3.3.0"
+    "watt": "^3.3.0",
+    "xcraft-core-utils": "^1.0.2"
   },
   "author": "Mathieu Schroeter",
   "license": "MIT",
