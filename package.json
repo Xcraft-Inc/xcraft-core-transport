@@ -24,7 +24,7 @@
     }
   },
   "dependencies": {
-    "axon": "Xcraft-Inc/axon",
+    "axon": "github:Xcraft-Inc/axon",
     "watt": "^3.3.0",
     "xcraft-core-utils": "^1.1.0"
   },
