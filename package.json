@@ -25,6 +25,8 @@
   },
   "dependencies": {
     "axon": "github:Xcraft-Inc/axon",
+    "immutable": "4.0.0-rc.2",
+    "transit-immutable-js": "^0.7.0",
     "watt": "^3.3.0",
     "xcraft-core-utils": "^1.1.0"
   },
