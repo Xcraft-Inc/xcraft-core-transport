@@ -24,7 +24,7 @@
     }
   },
   "dependencies": {
-    "axon": "github:Xcraft-Inc/axon",
+    "axon": "https://github.com/Xcraft-Inc/axon/archive/master.tar.gz",
     "immutable": "4.0.0-rc.4",
     "transit-js": "^0.8.846",
     "transit-immutable-js": "^0.7.0",
