@@ -11,7 +11,7 @@ cmd.status = function(msg, resp) {
     resp.log.info(`transport ${index}`);
     resp.log.info(`-> mode:${status.mode}`);
     Object.keys(status.backends).forEach(name => {
-      const subs = status.backends[name].subscriptions;
+      const subs = Object.keys(status.backends[name].subscriptions);
       resp.log.info(`   [${name}] active:${status.backends[name].active}`);
       if (subs.length) {
         resp.log.info(`   [${name}] subscriptions:`);
