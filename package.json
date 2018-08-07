@@ -42,7 +42,7 @@
   "homepage": "https://github.com/Xcraft-Inc/xcraft-core-transport#readme",
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^3.4.2",
+    "mocha": "^5.2.0",
     "xcraft-dev-rules": "^0.2.0"
   }
 }
