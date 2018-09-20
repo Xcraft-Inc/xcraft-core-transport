@@ -31,6 +31,7 @@
     "xcraft-axon": "^2.0.4",
     "xcraft-core-etc": "^1.2.0",
     "xcraft-core-fs": "^1.0.1",
+    "xcraft-core-probe": "^0.0.1",
     "xcraft-core-shredder": "^1.0.0",
     "xcraft-core-utils": "^1.1.0"
   },
