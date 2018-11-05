@@ -24,10 +24,10 @@
     }
   },
   "dependencies": {
+    "gigawatts": "^4.0.0",
     "immutable": "4.0.0-rc.4",
     "transit-js": "^0.8.846",
     "transit-immutable-js": "^0.7.0",
-    "watt": "^3.3.0",
     "xcraft-axon": "^2.0.4",
     "xcraft-core-etc": "^1.2.0",
     "xcraft-core-fs": "^1.0.1",
