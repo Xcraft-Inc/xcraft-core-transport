@@ -62,6 +62,14 @@ describe('pubsub', function() {
       }
     };
 
+    let cnt2 = 0;
+    const send = () => {
+      ++cnt2;
+      if (cnt2 === 2) {
+        server.send('foobar', 'the message');
+      }
+    };
+
     server.start({host: '127.0.0.1', port: 3335}, () => {
       clientEe.subscribe('foobar');
       clientEe.on('message', (...args) => {
@@ -72,7 +80,8 @@ describe('pubsub', function() {
       });
       clientEe.connect(
         'ee',
-        {}
+        {port: 3335, host: '127.0.0.1'},
+        () => send()
       );
 
       clientAxon.subscribe('foobar');
@@ -84,10 +93,9 @@ describe('pubsub', function() {
       });
       clientAxon.connect(
         'axon',
-        {port: 3335, host: '127.0.0.1'}
+        {port: 3335, host: '127.0.0.1'},
+        () => send()
       );
-
-      server.send('foobar', 'the message');
     });
   });
 });
