@@ -4,6 +4,7 @@ const {expect} = require('chai');
 const Router = require('../lib/router.js');
 
 const xLog = require('xcraft-core-log')('test', null);
+xLog.setVerbosity(2);
 
 describe('pushpull', function() {
   const server = new Router('pull', xLog);
