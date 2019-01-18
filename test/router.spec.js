@@ -14,9 +14,8 @@ describe('pushpull', function() {
   it('#start and connect', function(done) {
     let id = 'ee';
 
-    server.on('message', msg => {
-      console.log(id);
-      expect(msg).to.be.eql(`test-${id}`);
+    server.on('message', topic => {
+      expect(topic).to.be.eql(`test-${id}`);
       if (id !== 'ee') {
         clientEe.stop();
         clientAxon.stop();
