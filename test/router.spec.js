@@ -62,7 +62,10 @@ describe('pubsub', function() {
         expect(args[1]).to.be.eql('the message');
         _done();
       });
-      clientEe.connect('ee', {});
+      clientEe.connect(
+        'ee',
+        {}
+      );
 
       clientAxon.subscribe('foobar');
       clientAxon.on('message', (...args) => {
@@ -71,7 +74,10 @@ describe('pubsub', function() {
         expect(args[1]).to.be.eql('the message');
         _done();
       });
-      clientAxon.connect('axon', {port: 3335, host: '127.0.0.1'});
+      clientAxon.connect(
+        'axon',
+        {port: 3335, host: '127.0.0.1'}
+      );
 
       server.send('foobar', 'the message');
     });
