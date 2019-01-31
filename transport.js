@@ -1,11 +1,11 @@
 'use strict';
 
-const transport = require('.');
+const {getRouters} = require('.');
 
 const cmd = {};
 
 cmd.status = function(msg, resp) {
-  const status = transport.getRouters().map(router => router.status());
+  const status = getRouters().map(router => router.status());
 
   status.forEach((status, index) => {
     resp.log.info(`transport ${index}`);
