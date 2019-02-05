@@ -25,22 +25,14 @@ describe('pushpull', function() {
     });
 
     server.start({host: '127.0.0.1', port: 3334}, () => {
-      clientEe.connect(
-        'ee',
-        {},
-        () => {
-          clientEe.send('test-ee', {});
-        }
-      );
+      clientEe.connect('ee', {}, () => {
+        clientEe.send('test-ee', {});
+      });
 
       id = 'axon';
-      clientAxon.connect(
-        'axon',
-        {port: 3334, host: '127.0.0.1'},
-        () => {
-          clientAxon.send('test-axon', {});
-        }
-      );
+      clientAxon.connect('axon', {port: 3334, host: '127.0.0.1'}, () => {
+        clientAxon.send('test-axon', {});
+      });
     });
   });
 });
@@ -78,11 +70,7 @@ describe('pubsub', function() {
         expect(args[1]).to.be.eql('the message');
         _done();
       });
-      clientEe.connect(
-        'ee',
-        {port: 3335, host: '127.0.0.1'},
-        () => send()
-      );
+      clientEe.connect('ee', {port: 3335, host: '127.0.0.1'}, () => send());
 
       clientAxon.subscribe('foobar');
       clientAxon.on('message', (...args) => {
@@ -91,11 +79,7 @@ describe('pubsub', function() {
         expect(args[1]).to.be.eql('the message');
         _done();
       });
-      clientAxon.connect(
-        'axon',
-        {port: 3335, host: '127.0.0.1'},
-        () => send()
-      );
+      clientAxon.connect('axon', {port: 3335, host: '127.0.0.1'}, () => send());
     });
   });
 });
