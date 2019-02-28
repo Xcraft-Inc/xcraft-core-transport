@@ -7,9 +7,9 @@ const xLog = require('xcraft-core-log')('test', null);
 xLog.setVerbosity(2);
 
 describe('pushpull', function() {
-  const server = new Router('pull', xLog);
-  const clientEe = new Router('push', xLog);
-  const clientAxon = new Router('push', xLog);
+  const server = new Router(null, 'pull', xLog);
+  const clientEe = new Router(null, 'push', xLog);
+  const clientAxon = new Router(null, 'push', xLog);
 
   it('#start and connect', function(done) {
     let id = 'ee';
@@ -38,9 +38,9 @@ describe('pushpull', function() {
 });
 
 describe('pubsub', function() {
-  const server = new Router('pub', xLog);
-  const clientEe = new Router('sub', xLog);
-  const clientAxon = new Router('sub', xLog);
+  const server = new Router(null, 'pub', xLog);
+  const clientEe = new Router(null, 'sub', xLog);
+  const clientAxon = new Router(null, 'sub', xLog);
 
   it('#subscribe and publish', function(done) {
     let cnt = 0;
