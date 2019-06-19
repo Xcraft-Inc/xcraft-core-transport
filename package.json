@@ -1,6 +1,6 @@
 {
   "name": "xcraft-core-transport",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Xcraft bus transport backends",
   "main": "./lib/index.js",
   "engines": {
