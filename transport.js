@@ -1,8 +1,28 @@
 'use strict';
 
 const {getRouters} = require('.');
-
+const {appId} = require('xcraft-core-host');
 const cmd = {};
+const emitChunk = `${appId}.emit-chunk`;
+const emitEnd = `${appId}.emit-end`;
+
+cmd[emitChunk] = function(msg, resp) {
+  try {
+    resp.events.send(`${msg.data.streamId}.stream.chunked`, msg.data);
+    resp.events.send(`transport.${emitChunk}.${msg.id}.finished`);
+  } catch (err) {
+    resp.events.send(`transport.${emitChunk}.${msg.id}.error`, err);
+  }
+};
+
+cmd[emitEnd] = function(msg, resp) {
+  try {
+    resp.events.send(`${msg.data.streamId}.stream.ended`);
+    resp.events.send(`transport.${emitEnd}.${msg.id}.finished`);
+  } catch (err) {
+    resp.events.send(`transport.${emitEnd}.${msg.id}.error`, err);
+  }
+};
 
 cmd.status = function(msg, resp) {
   const status = getRouters().map(router => router.status());
@@ -38,6 +58,14 @@ exports.xcraftCommands = function() {
       status: {
         parallel: true,
         desc: 'show the status of all transports',
+      },
+      [emitChunk]: {
+        parallel: true,
+        desc: 'request chunk emission in the streamer',
+      },
+      [emitEnd]: {
+        parallel: true,
+        desc: 'request end of streaming',
       },
     },
   };
