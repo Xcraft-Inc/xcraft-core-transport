@@ -1,10 +1,13 @@
 'use strict';
 
+const {getARP} = require('./lib/router.js');
 const {getRouters} = require('.');
 const {appId} = require('xcraft-core-host');
+
 const cmd = {};
 const emitChunk = `${appId}.emit-chunk`;
 const emitEnd = `${appId}.emit-end`;
+const arp = `${appId}.arp`;
 
 cmd[emitChunk] = function(msg, resp) {
   try {
@@ -22,6 +25,17 @@ cmd[emitEnd] = function(msg, resp) {
   } catch (err) {
     resp.events.send(`transport.${emitEnd}.${msg.id}.error`, err);
   }
+};
+
+cmd[arp] = function(msg, resp) {
+  const _arp = getARP();
+
+  Object.entries(_arp).forEach(([orcName, route]) => {
+    resp.log.info(`orc name: ${orcName}`);
+    resp.log.info(`-> id:${route.id} token:${route.token} port:${route.port}`);
+  });
+
+  resp.events.send(`transport.${arp}.${msg.id}.finished`);
 };
 
 cmd.status = function(msg, resp) {
@@ -55,6 +69,10 @@ exports.xcraftCommands = function() {
   return {
     handlers: cmd,
     rc: {
+      [arp]: {
+        parallel: true,
+        desc: 'show the ARP table',
+      },
       status: {
         parallel: true,
         desc: 'show the status of all transports',
