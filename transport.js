@@ -7,6 +7,7 @@ const {appId} = require('xcraft-core-host');
 const cmd = {};
 const emitChunk = `${appId}.emit-chunk`;
 const emitEnd = `${appId}.emit-end`;
+const startEmit = `${appId}.start-emit`;
 const arp = `${appId}.arp`;
 
 cmd[emitChunk] = function(msg, resp) {
@@ -24,6 +25,17 @@ cmd[emitEnd] = function(msg, resp) {
     resp.events.send(`transport.${emitEnd}.${msg.id}.finished`);
   } catch (err) {
     resp.events.send(`transport.${emitEnd}.${msg.id}.error`, err);
+  }
+};
+
+cmd[startEmit] = function(msg, resp) {
+  try {
+    resp.events.send(`${msg.data.streamId}.stream.started`, {
+      appId: msg.data.appId,
+    });
+    resp.events.send(`transport.${startEmit}.${msg.id}.finished`);
+  } catch (err) {
+    resp.events.send(`transport.${startEmit}.${msg.id}.error`, err);
   }
 };
 
@@ -84,6 +96,10 @@ exports.xcraftCommands = function() {
       [emitEnd]: {
         parallel: true,
         desc: 'request end of streaming',
+      },
+      [startEmit]: {
+        parallel: true,
+        desc: 'request start streaming',
       },
     },
   };
