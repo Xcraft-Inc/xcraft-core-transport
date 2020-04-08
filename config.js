@@ -13,7 +13,7 @@ module.exports = [
     message: 'enabled backends (empty for all)',
     choices: xFs
       .ls(path.join(__dirname, 'lib/backends'), /\.js$/)
-      .map(mod => mod.replace(/\.js$/, '')),
+      .map((mod) => mod.replace(/\.js$/, '')),
     default: [],
   },
 ];

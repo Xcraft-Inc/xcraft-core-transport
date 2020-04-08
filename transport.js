@@ -10,7 +10,7 @@ const emitEnd = `${appId}.emit-end`;
 const startEmit = `${appId}.start-emit`;
 const arp = `${appId}.arp`;
 
-cmd[emitChunk] = function(msg, resp) {
+cmd[emitChunk] = function (msg, resp) {
   try {
     resp.events.send(`${msg.data.streamId}.stream.chunked`, msg.data);
     resp.events.send(`transport.${emitChunk}.${msg.id}.finished`);
@@ -19,7 +19,7 @@ cmd[emitChunk] = function(msg, resp) {
   }
 };
 
-cmd[emitEnd] = function(msg, resp) {
+cmd[emitEnd] = function (msg, resp) {
   try {
     resp.events.send(`${msg.data.streamId}.stream.ended`);
     resp.events.send(`transport.${emitEnd}.${msg.id}.finished`);
@@ -28,7 +28,7 @@ cmd[emitEnd] = function(msg, resp) {
   }
 };
 
-cmd[startEmit] = function(msg, resp) {
+cmd[startEmit] = function (msg, resp) {
   try {
     resp.events.send(`${msg.data.streamId}.stream.started`, {
       appId: msg.data.appId,
@@ -39,7 +39,7 @@ cmd[startEmit] = function(msg, resp) {
   }
 };
 
-cmd[arp] = function(msg, resp) {
+cmd[arp] = function (msg, resp) {
   const _arp = getARP();
 
   Object.entries(_arp).forEach(([orcName, route]) => {
@@ -50,19 +50,19 @@ cmd[arp] = function(msg, resp) {
   resp.events.send(`transport.${arp}.${msg.id}.finished`);
 };
 
-cmd.status = function(msg, resp) {
-  const status = getRouters().map(router => router.status());
+cmd.status = function (msg, resp) {
+  const status = getRouters().map((router) => router.status());
 
   status.forEach((status, index) => {
     resp.log.info(`transport ${index}`);
     resp.log.info(`-> mode:${status.mode}`);
-    Object.keys(status.backends).forEach(name => {
+    Object.keys(status.backends).forEach((name) => {
       const subs = Object.keys(status.backends[name].subscriptions);
       resp.log.info(`   [${name}] active:${status.backends[name].active}`);
       if (subs.length) {
         resp.log.info(`   [${name}] subscriptions:`);
       }
-      subs.forEach(sub => {
+      subs.forEach((sub) => {
         resp.log.info(`   -> ${sub}`);
       });
     });
@@ -77,7 +77,7 @@ cmd.status = function(msg, resp) {
  *
  * @returns {Object} The list and definitions of commands.
  */
-exports.xcraftCommands = function() {
+exports.xcraftCommands = function () {
   return {
     handlers: cmd,
     rc: {
