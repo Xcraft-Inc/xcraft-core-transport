@@ -4,8 +4,8 @@ const {expect} = require('chai');
 const {extractIds} = require('../lib/helpers.js');
 const Cache = require('../lib/cache.js');
 
-describe('cache', function() {
-  it('#matches global', function() {
+describe('cache', function () {
+  it('#matches global', function () {
     const cache = new Cache();
     let r;
 
@@ -22,7 +22,7 @@ describe('cache', function() {
     expect(cache._cache.size).to.be.eql(1);
   });
 
-  it('#matches id', function() {
+  it('#matches id', function () {
     const cache = new Cache();
     let r;
     let id;

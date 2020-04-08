@@ -6,15 +6,15 @@ const Router = require('../lib/router.js');
 const xLog = require('xcraft-core-log')('test', null);
 xLog.setVerbosity(2);
 
-describe('pushpull', function() {
+describe('pushpull', function () {
   const server = new Router(null, 'pull', xLog);
   const clientEe = new Router(null, 'push', xLog);
   const clientAxon = new Router(null, 'push', xLog);
 
-  it('#start and connect', function(done) {
+  it('#start and connect', function (done) {
     let id = 'ee';
 
-    server.on('message', topic => {
+    server.on('message', (topic) => {
       expect(topic).to.be.eql(`test-${id}`);
       if (id !== 'ee') {
         clientEe.stop();
@@ -37,12 +37,12 @@ describe('pushpull', function() {
   });
 });
 
-describe('pubsub', function() {
+describe('pubsub', function () {
   const server = new Router(null, 'pub', xLog);
   const clientEe = new Router(null, 'sub', xLog);
   const clientAxon = new Router(null, 'sub', xLog);
 
-  it('#subscribe and publish', function(done) {
+  it('#subscribe and publish', function (done) {
     let cnt = 0;
     const _done = () => {
       ++cnt;
