@@ -2,7 +2,15 @@
 
 const {getARP} = require('./lib/router.js');
 const {getRouters} = require('.');
-const {appId} = require('xcraft-core-host');
+
+let appId = '$';
+try {
+  appId = require('xcraft-core-host').appId;
+} catch (ex) {
+  if (ex.code !== 'MODULE_NOT_FOUND') {
+    throw ex;
+  }
+}
 
 const cmd = {};
 const emitChunk = `${appId}.emit-chunk`;

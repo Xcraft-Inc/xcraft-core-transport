@@ -41,6 +41,9 @@
     "url": "https://github.com/Xcraft-Inc/xcraft-core-transport/issues"
   },
   "homepage": "https://github.com/Xcraft-Inc/xcraft-core-transport#readme",
+  "optionalDependencies": {
+    "xcraft-core-host": "^2.1.0"
+  },
   "devDependencies": {
     "chai": "^3.5.0",
     "mocha": "^5.2.0",
