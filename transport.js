@@ -49,12 +49,13 @@ cmd[startEmit] = function (msg, resp) {
 
 cmd[arp] = function (msg, resp) {
   const _arp = getARP();
+  const data = [['orcName', 'id', 'token', 'port']];
 
   Object.entries(_arp).forEach(([orcName, route]) => {
-    resp.log.info(`orc name: ${orcName}`);
-    resp.log.info(`-> id:${route.id} token:${route.token} port:${route.port}`);
+    data.push([orcName, route.id, route.token, route.port]);
   });
 
+  resp.log.info.table(data);
   resp.events.send(`transport.${arp}.${msg.id}.finished`);
 };
 
