@@ -26,6 +26,7 @@
   "dependencies": {
     "gigawatts": "^4.0.1",
     "immutable": "4.0.0-rc.4",
+    "tar-stream": "^2.1.0",
     "transit-js": "^0.8.846",
     "transit-immutable-js": "^0.7.0",
     "xcraft-axon": "^2.1.0",
