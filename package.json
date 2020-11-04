@@ -43,6 +43,7 @@
   },
   "homepage": "https://github.com/Xcraft-Inc/xcraft-core-transport#readme",
   "optionalDependencies": {
+    "xcraft-core-horde": "^2.0.1",
     "xcraft-core-host": "^2.1.0"
   },
   "devDependencies": {
