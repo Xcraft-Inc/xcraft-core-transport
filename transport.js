@@ -75,7 +75,7 @@ cmd[arpHordes] = function (msg, resp) {
     let hordes = {};
     if (route.hordes) {
       hordes = route.hordes.reduce((state, horde) => {
-        const len = horde.length / 2 - 1;
+        const len = horde.length / 2;
         state[horde] = new Array(len).join(' ') + 'X';
         return state;
       }, hordes);
