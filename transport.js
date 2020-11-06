@@ -57,6 +57,7 @@ cmd[arp] = function (msg, resp) {
       id: route.id,
       token: route.token,
       port: route.port,
+      hordes: route.hordes ? route.hordes.join(', ') : '',
     });
   });
 
