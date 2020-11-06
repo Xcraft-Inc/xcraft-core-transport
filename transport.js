@@ -17,6 +17,8 @@ const emitChunk = `${appId}.emit-chunk`;
 const emitEnd = `${appId}.emit-end`;
 const startEmit = `${appId}.start-emit`;
 const arp = `${appId}.arp`;
+const arpHordes = `${appId}.arp.hordes`;
+const arpLines = `${appId}.arp.lines`;
 
 cmd[emitChunk] = function (msg, resp) {
   try {
@@ -59,9 +61,55 @@ cmd[arp] = function (msg, resp) {
       port: route.port,
     });
   });
-
+  resp.log.info('ARP routing entries');
   resp.log.info.table(data);
+
   resp.events.send(`transport.${arp}.${msg.id}.finished`);
+};
+
+cmd[arpHordes] = function (msg, resp) {
+  const _arp = getARP();
+  const data = [];
+
+  Object.entries(_arp).forEach(([orcName, route]) => {
+    let hordes = {};
+    if (route.hordes) {
+      hordes = route.hordes.reduce((state, horde) => {
+        const len = horde.length / 2 - 1;
+        state[horde] = new Array(len).join(' ') + 'X';
+        return state;
+      }, hordes);
+    }
+    data.push({
+      orcName: orcName,
+      ...hordes,
+    });
+  });
+  resp.log.info('ARP hordes');
+  resp.log.info.table(data);
+
+  resp.events.send(`transport.${arpHordes}.${msg.id}.finished`);
+};
+
+cmd[arpLines] = function (msg, resp) {
+  const _arp = getARP();
+  const data = [];
+
+  resp.log.info('ARP lines');
+  Object.entries(_arp).forEach(([orcName, route]) => {
+    resp.log.info(`${orcName}`);
+    if (route.lines) {
+      for (const lineId in route.lines) {
+        data.push({
+          lineId,
+          counter: route.lines[lineId],
+        });
+      }
+    }
+    resp.log.info.table(data);
+  });
+
+  resp.events.send(`transport.${arpLines}.${msg.id}.finished`);
 };
 
 cmd.status = function (msg, resp) {
@@ -97,7 +145,15 @@ exports.xcraftCommands = function () {
     rc: {
       [arp]: {
         parallel: true,
-        desc: 'show the ARP table',
+        desc: 'show the ARP table (summary)',
+      },
+      [arpHordes]: {
+        parallel: true,
+        desc: 'show the hordes list in the ARP table',
+      },
+      [arpLines]: {
+        parallel: true,
+        desc: 'show the lines in the ARP table',
       },
       status: {
         parallel: true,
