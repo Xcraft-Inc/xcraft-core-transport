@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "gigawatts": "^4.0.1",
-    "immutable": "4.0.0-rc.4",
+    "immutable": "4.0.0-rc.12",
     "lodash": "^4.17.20",
     "tar-stream": "^2.1.0",
     "transit-js": "^0.8.846",
