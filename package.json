@@ -29,7 +29,7 @@
     "lodash": "^4.17.20",
     "tar-stream": "^2.1.0",
     "transit-js": "^0.8.846",
-    "transit-immutable-js": "^0.7.0",
+    "transit-immutable-js": "^0.8.0",
     "xcraft-axon": "^2.2.0",
     "xcraft-core-etc": "^2.0.4",
     "xcraft-core-fs": "^2.1.0",
