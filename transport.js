@@ -53,15 +53,24 @@ cmd[arp] = function (msg, resp) {
   const _arp = getARP();
   const data = [];
 
-  Object.entries(_arp).forEach(([orcName, route]) => {
-    data.push({
-      orcName: orcName,
-      id: route.id,
-      token: route.token,
-      port: route.port,
-      hordes: route.hordes ? route.hordes.join(', ') : '',
+  Object.entries(_arp)
+    .map(([backend, orcNames]) => ({
+      backend,
+      orcNames,
+    }))
+    .forEach(({backend, orcNames}) => {
+      Object.entries(orcNames).forEach(([orcName, route]) =>
+        data.push({
+          backend,
+          orcName,
+          id: route.id,
+          token: route.token,
+          port: route.port,
+          hordes: route.hordes ? route.hordes.join(', ') : '',
+        })
+      );
     });
-  });
+
   resp.log.info('ARP routing entries');
   resp.log.info.table(data);
 
@@ -72,20 +81,29 @@ cmd[arpHordes] = function (msg, resp) {
   const _arp = getARP();
   const data = [];
 
-  Object.entries(_arp).forEach(([orcName, route]) => {
-    let hordes = {};
-    if (route.hordes) {
-      hordes = route.hordes.reduce((state, horde) => {
-        const len = horde.length / 2;
-        state[horde] = new Array(len).join(' ') + 'X';
-        return state;
-      }, hordes);
-    }
-    data.push({
-      orcName: orcName,
-      ...hordes,
+  Object.entries(_arp)
+    .map(([backend, orcNames]) => ({
+      backend,
+      orcNames,
+    }))
+    .forEach(({backend, orcNames}) => {
+      Object.entries(orcNames).forEach(([orcName, route]) => {
+        let hordes = {};
+        if (route.hordes) {
+          hordes = route.hordes.reduce((state, horde) => {
+            const len = horde.length / 2;
+            state[horde] = new Array(len).join(' ') + 'X';
+            return state;
+          }, hordes);
+        }
+        data.push({
+          backend,
+          orcName,
+          ...hordes,
+        });
+      });
     });
-  });
+
   resp.log.info('ARP hordes');
   resp.log.info.table(data);
 
@@ -97,18 +115,26 @@ cmd[arpLines] = function (msg, resp) {
   const data = [];
 
   resp.log.info('ARP lines');
-  Object.entries(_arp).forEach(([orcName, route]) => {
-    resp.log.info(`${orcName}`);
-    if (route.lines) {
-      for (const lineId in route.lines) {
-        data.push({
-          lineId,
-          counter: route.lines[lineId],
-        });
-      }
-    }
-    resp.log.info.table(data);
-  });
+  Object.entries(_arp)
+    .map(([backend, orcNames]) => ({
+      backend,
+      orcNames,
+    }))
+    .forEach(({backend, orcNames}) => {
+      Object.entries(orcNames).forEach(([orcName, route]) => {
+        resp.log.info(`${orcName}`);
+        if (route.lines) {
+          for (const lineId in route.lines) {
+            data.push({
+              backend,
+              lineId,
+              counter: route.lines[lineId],
+            });
+          }
+        }
+        resp.log.info.table(data);
+      });
+    });
 
   resp.events.send(`transport.${arpLines}.${msg.id}.finished`);
 };
