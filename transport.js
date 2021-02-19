@@ -171,9 +171,11 @@ cmd.xcraftMetrics = function (msg, resp) {
     /* ARP table */
     const arpKey = `${os.hostname()}.${appId}.transport.arp`;
     const _arp = getARP();
-    metrics[arpKey] = Object.keys(_arp).length;
+    metrics[`${arpKey}.total`] = Object.keys(_arp).length;
     Object.entries(_arp).forEach(([backend, orcNames]) => {
-      metrics[`${arpKey}.${backend}.orcNames`] = Object.keys(orcNames).length;
+      metrics[`${arpKey}.${backend}.orcNames.total`] = Object.keys(
+        orcNames
+      ).length;
       Object.entries(orcNames).forEach(([orcName, route]) => {
         if (route.lines) {
           metrics[
@@ -193,14 +195,15 @@ cmd.xcraftMetrics = function (msg, resp) {
     /* Routers */
     const routerKey = `${os.hostname()}.${appId}.transport.routers`;
     const routers = getRouters();
-    metrics[routerKey] = routers.length;
+    metrics[`${routerKey}.total`] = routers.length;
     routers.forEach((router) => {
       for (const [name, backend] of router._backends) {
         if (backend._sock && backend._sock.socks) {
-          metrics[`${routerKey}.${name}.socks`] = backend._sock.socks.length;
+          metrics[`${routerKey}.${name}.socks.total`] =
+            backend._sock.socks.length;
           for (const sock of backend._sock.socks) {
             metrics[
-              `${routerKey}.${name}.socks.L${sock.localPort}R${sock.remotePort}.buffer`
+              `${routerKey}.${name}.socks.L${sock.localPort}R${sock.remotePort}.buffer.total`
             ] = sock.bufferSize;
           }
         }
