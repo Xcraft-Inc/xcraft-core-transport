@@ -178,14 +178,16 @@ cmd.xcraftMetrics = function (msg, resp) {
       ).length;
       Object.entries(orcNames).forEach(([orcName, route]) => {
         if (route.lines) {
-          metrics[
-            `${arpKey}.${backend}.orcNames.${orcName}.lines.total`
-          ] = Object.keys(route.lines).length;
+          metrics[`${arpKey}.${backend}.orcNames.${orcName}.lines`] = {
+            labels: {orcName},
+            total: Object.keys(route.lines).length,
+          };
         }
         if (route.hordes) {
-          metrics[
-            `${arpKey}.${backend}.orcNames.${orcName}.hordes.total`
-          ] = Object.keys(route.hordes).length;
+          metrics[`${arpKey}.${backend}.orcNames.${orcName}.hordes`] = {
+            labels: {orcName},
+            total: Object.keys(route.hordes).length,
+          };
         }
       });
     });
