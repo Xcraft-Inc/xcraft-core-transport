@@ -161,6 +161,56 @@ cmd.status = function (msg, resp) {
   resp.events.send(`transport.status.${msg.id}.finished`);
 };
 
+cmd.xcraftMetrics = function (msg, resp) {
+  const os = require('os');
+  const metrics = {};
+
+  try {
+    /************************************************************************/
+
+    /* ARP table */
+    const arpKey = `${os.hostname()}.${appId}.transport.arp`;
+    const _arp = getARP();
+    metrics[arpKey] = Object.keys(_arp).length;
+    Object.entries(_arp).forEach(([backend, orcNames]) => {
+      metrics[`${arpKey}.${backend}.orcNames`] = Object.keys(orcNames).length;
+      Object.entries(orcNames).forEach(([orcName, route]) => {
+        if (route.lines) {
+          metrics[
+            `${arpKey}.${backend}.orcNames.${orcName}.lines.total`
+          ] = Object.keys(route.lines).length;
+        }
+        if (route.hordes) {
+          metrics[
+            `${arpKey}.${backend}.orcNames.${orcName}.hordes.total`
+          ] = Object.keys(route.hordes).length;
+        }
+      });
+    });
+
+    /************************************************************************/
+
+    /* Routers */
+    const routerKey = `${os.hostname()}.${appId}.transport.routers`;
+    const routers = getRouters();
+    metrics[routerKey] = routers.length;
+    routers.forEach((router) => {
+      for (const [name, backend] of router._backends) {
+        if (backend._sock && backend._sock.socks) {
+          metrics[`${routerKey}.${name}.socks`] = backend._sock.socks.length;
+          for (const sock of backend._sock.socks) {
+            metrics[
+              `${routerKey}.${name}.socks.L${sock.localPort}R${sock.remotePort}.buffer`
+            ] = sock.bufferSize;
+          }
+        }
+      }
+    });
+  } finally {
+    resp.events.send(`transport.xcraftMetrics.${msg.id}.finished`, metrics);
+  }
+};
+
 /**
  * Retrieve the list of available commands.
  *
@@ -197,6 +247,10 @@ exports.xcraftCommands = function () {
       [startEmit]: {
         parallel: true,
         desc: 'request start streaming',
+      },
+      xcraftMetrics: {
+        parallel: true,
+        desc: 'extract transport Xcraft metrics',
       },
     },
   };
