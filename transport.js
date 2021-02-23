@@ -209,7 +209,7 @@ cmd.xcraftMetrics = function (msg, resp) {
             backend._sock.socks.length;
           for (const sock of backend._sock.socks) {
             metrics[
-              `${routerKey}.${name}.socks.L${sock.localPort}R${sock.remotePort}.bytesRead.total`
+              `${routerKey}.${name}.socks.L${sock.localPort}R${sock.remotePort}.bytesRead`
             ] = {
               total: sock.bytesRead,
               labels: {
@@ -219,7 +219,7 @@ cmd.xcraftMetrics = function (msg, resp) {
               },
             };
             metrics[
-              `${routerKey}.${name}.socks.L${sock.localPort}R${sock.remotePort}.bytesWritten.total`
+              `${routerKey}.${name}.socks.L${sock.localPort}R${sock.remotePort}.bytesWritten`
             ] = {
               total: sock.bytesWritten,
               labels: {
