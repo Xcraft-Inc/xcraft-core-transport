@@ -177,11 +177,13 @@ cmd.xcraftMetrics = function (msg, resp) {
         orcNames
       ).length;
       Object.entries(orcNames).forEach(([orcName, route]) => {
-        if (metrics[`${arpKey}.${backend}.orcNames.${orcName}`]) {
-          ++metrics[`${arpKey}.${backend}.orcNames.${orcName}`];
-        } else {
-          metrics[`${arpKey}.${backend}.orcNames.${orcName}`] = 1;
-        }
+        metrics[`${arpKey}.${backend}.orcNames.${orcName}`] = {
+          total: 1,
+          labels: {
+            token: route.token,
+            hordes: route.hordes ? route.hordes.join(',') : '',
+          },
+        };
         if (route.lines) {
           const cnt = Object.keys(route.lines).length;
           if (cnt > 0) {
@@ -208,10 +210,24 @@ cmd.xcraftMetrics = function (msg, resp) {
           for (const sock of backend._sock.socks) {
             metrics[
               `${routerKey}.${name}.socks.L${sock.localPort}R${sock.remotePort}.bytesRead.total`
-            ] = sock.bytesRead;
+            ] = {
+              total: sock.bytesRead,
+              labels: {
+                mode: router.mode,
+                type: backend._sock.type,
+                id: router.id,
+              },
+            };
             metrics[
               `${routerKey}.${name}.socks.L${sock.localPort}R${sock.remotePort}.bytesWritten.total`
-            ] = sock.bytesWritten;
+            ] = {
+              total: sock.bytesWritten,
+              labels: {
+                mode: router.mode,
+                type: backend._sock.type,
+                id: router.id,
+              },
+            };
           }
         }
       }
