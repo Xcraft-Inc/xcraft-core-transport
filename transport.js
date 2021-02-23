@@ -177,17 +177,19 @@ cmd.xcraftMetrics = function (msg, resp) {
         orcNames
       ).length;
       Object.entries(orcNames).forEach(([orcName, route]) => {
-        if (route.lines) {
-          metrics[`${arpKey}.${backend}.orcNames.${orcName}.lines`] = {
-            labels: {orcName},
-            total: Object.keys(route.lines).length,
-          };
+        if (metrics[`${arpKey}.${backend}.orcNames.${orcName}`]) {
+          ++metrics[`${arpKey}.${backend}.orcNames.${orcName}`];
+        } else {
+          metrics[`${arpKey}.${backend}.orcNames.${orcName}`] = 1;
         }
-        if (route.hordes) {
-          metrics[`${arpKey}.${backend}.orcNames.${orcName}.hordes`] = {
-            labels: {orcName},
-            total: Object.keys(route.hordes).length,
-          };
+        if (route.lines) {
+          const cnt = Object.keys(route.lines).length;
+          if (cnt > 0) {
+            metrics[`${arpKey}.${backend}.orcNames.${orcName}.lines`] = {
+              labels: {orcName},
+              total: Object.keys(route.lines).length,
+            };
+          }
         }
       });
     });
@@ -205,8 +207,11 @@ cmd.xcraftMetrics = function (msg, resp) {
             backend._sock.socks.length;
           for (const sock of backend._sock.socks) {
             metrics[
-              `${routerKey}.${name}.socks.L${sock.localPort}R${sock.remotePort}.buffer.total`
-            ] = sock.bufferSize;
+              `${routerKey}.${name}.socks.L${sock.localPort}R${sock.remotePort}.bytesRead.total`
+            ] = sock.bytesRead;
+            metrics[
+              `${routerKey}.${name}.socks.L${sock.localPort}R${sock.remotePort}.bytesWritten.total`
+            ] = sock.bytesWritten;
           }
         }
       }
