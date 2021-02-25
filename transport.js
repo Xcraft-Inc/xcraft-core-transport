@@ -204,7 +204,15 @@ cmd.xcraftMetrics = function (msg, resp) {
     metrics[`${routerKey}.total`] = routers.length;
     routers.forEach((router) => {
       for (const [name, backend] of router._backends) {
-        metrics[`${routerKey}.${name}.subscriptions.total`] = backend.subsSize;
+        if (router.mode === 'sub') {
+          metrics[`${routerKey}.${name}.${router.id}.subscriptions`] = {
+            total: backend.subsSize,
+            labels: {
+              mode: router.mode,
+              id: router.id,
+            },
+          };
+        }
         if (backend._sock && backend._sock.socks) {
           metrics[`${routerKey}.${name}.socks.total`] =
             backend._sock.socks.length;
