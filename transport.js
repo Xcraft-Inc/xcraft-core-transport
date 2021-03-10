@@ -161,6 +161,91 @@ cmd.status = function (msg, resp) {
   resp.events.send(`transport.status.${msg.id}.finished`);
 };
 
+cmd.xcraftMetrics = function (msg, resp) {
+  const os = require('os');
+  const metrics = {};
+
+  try {
+    /************************************************************************/
+
+    /* ARP table */
+    const arpKey = `${os.hostname()}.${appId}.transport.arp`;
+    const _arp = getARP();
+    metrics[`${arpKey}.total`] = Object.keys(_arp).length;
+    Object.entries(_arp).forEach(([backend, orcNames]) => {
+      metrics[`${arpKey}.${backend}.orcNames.total`] = Object.keys(
+        orcNames
+      ).length;
+      Object.entries(orcNames).forEach(([orcName, route]) => {
+        metrics[`${arpKey}.${backend}.orcNames.${orcName}`] = {
+          total: 1,
+          labels: {
+            token: route.token,
+            hordes: route.hordes ? route.hordes.join(',') : '',
+          },
+        };
+        if (route.lines) {
+          const cnt = Object.keys(route.lines).length;
+          if (cnt > 0) {
+            metrics[`${arpKey}.${backend}.orcNames.${orcName}.lines`] = {
+              labels: {orcName},
+              total: Object.keys(route.lines).length,
+            };
+          }
+        }
+      });
+    });
+
+    /************************************************************************/
+
+    /* Routers */
+    const routerKey = `${os.hostname()}.${appId}.transport.routers`;
+    const routers = getRouters();
+    metrics[`${routerKey}.total`] = routers.length;
+    routers.forEach((router) => {
+      for (const [name, backend] of router._backends) {
+        if (router.mode === 'sub') {
+          metrics[`${routerKey}.${name}.${router.id}.subscriptions`] = {
+            total: backend.subsSize,
+            labels: {
+              mode: router.mode,
+              id: router.id,
+            },
+          };
+        }
+        if (backend._sock && backend._sock.socks) {
+          metrics[`${routerKey}.${name}.socks.total`] =
+            backend._sock.socks.length;
+          for (const sock of backend._sock.socks) {
+            metrics[
+              `${routerKey}.${name}.socks.L${sock.localPort}R${sock.remotePort}.bytesRead`
+            ] = {
+              total: sock.bytesRead,
+              labels: {
+                mode: router.mode,
+                type: backend._sock.type,
+                id: router.id,
+              },
+            };
+            metrics[
+              `${routerKey}.${name}.socks.L${sock.localPort}R${sock.remotePort}.bytesWritten`
+            ] = {
+              total: sock.bytesWritten,
+              labels: {
+                mode: router.mode,
+                type: backend._sock.type,
+                id: router.id,
+              },
+            };
+          }
+        }
+      }
+    });
+  } finally {
+    resp.events.send(`transport.xcraftMetrics.${msg.id}.finished`, metrics);
+  }
+};
+
 /**
  * Retrieve the list of available commands.
  *
@@ -197,6 +282,10 @@ exports.xcraftCommands = function () {
       [startEmit]: {
         parallel: true,
         desc: 'request start streaming',
+      },
+      xcraftMetrics: {
+        parallel: true,
+        desc: 'extract transport Xcraft metrics',
       },
     },
   };
