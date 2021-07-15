@@ -1,5 +1,6 @@
 'use strict';
 
+const path = require('path');
 const {getARP} = require('./lib/router.js');
 const {getRouters} = require('.');
 
@@ -217,9 +218,12 @@ cmd.xcraftMetrics = function (msg, resp) {
           metrics[`${routerKey}.${name}.socks.total`] =
             backend._sock.socks.length;
           for (const sock of backend._sock.socks) {
-            metrics[
-              `${routerKey}.${name}.socks.L${sock.localPort}R${sock.remotePort}.bytesRead`
-            ] = {
+            const id =
+              !sock.localPort && !sock.remotePort
+                ? path.basename(sock.server.address(), '.sock')
+                : `L${sock.localPort}R${sock.remotePort}`;
+
+            metrics[`${routerKey}.${name}.socks.${id}.bytesRead`] = {
               total: sock.bytesRead,
               labels: {
                 mode: router.mode,
@@ -227,9 +231,7 @@ cmd.xcraftMetrics = function (msg, resp) {
                 id: router.id,
               },
             };
-            metrics[
-              `${routerKey}.${name}.socks.L${sock.localPort}R${sock.remotePort}.bytesWritten`
-            ] = {
+            metrics[`${routerKey}.${name}.socks.${id}.bytesWritten`] = {
               total: sock.bytesWritten,
               labels: {
                 mode: router.mode,
