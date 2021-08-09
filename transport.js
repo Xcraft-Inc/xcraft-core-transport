@@ -219,7 +219,7 @@ cmd.xcraftMetrics = function (msg, resp) {
           for (const sock of backend._sock.socks) {
             const id =
               !sock.localPort && !sock.remotePort
-                ? `X:${sock._handle.fd}`
+                ? `X${sock._handle.fd}`
                 : `L${sock.localPort}R${sock.remotePort}`;
 
             metrics[`${routerKey}.${name}.socks.${id}.bytesRead`] = {
