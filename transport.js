@@ -1,6 +1,5 @@
 'use strict';
 
-const path = require('path');
 const {getARP} = require('./lib/router.js');
 const {getRouters} = require('.');
 
