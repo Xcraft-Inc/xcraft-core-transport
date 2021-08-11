@@ -9,9 +9,8 @@ describe('cache', function () {
     const ids = extractIds('albert@levert::my@entity.<with-a-line>');
 
     expect(ids[0]).to.be.equal('_');
-    expect(ids[1]).to.be.equal('<with-a-line>');
-    expect(ids[2]).to.be.equal('albert@levert');
-    expect(ids[3]).to.be.equal('my@entity');
+    expect(ids[1]).to.be.equal('albert@levert');
+    expect(ids[2]).to.be.equal('my@entity');
   });
 
   it('#extractIds for line with id', function () {
