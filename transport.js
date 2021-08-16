@@ -4,8 +4,11 @@ const {getARP} = require('./lib/router.js');
 const {getRouters} = require('.');
 
 let appId = '$';
+let tribe = '';
 try {
-  appId = require('xcraft-core-host').appId;
+  const xHost = require('xcraft-core-host');
+  appId = xHost.appId;
+  tribe = xHost.appArgs().tribe ? `-${xHost.appArgs().tribe}` : '';
 } catch (ex) {
   if (ex.code !== 'MODULE_NOT_FOUND') {
     throw ex;
@@ -13,12 +16,13 @@ try {
 }
 
 const cmd = {};
-const emitChunk = `${appId}.emit-chunk`;
-const emitEnd = `${appId}.emit-end`;
-const startEmit = `${appId}.start-emit`;
-const arp = `${appId}.arp`;
-const arpHordes = `${appId}.arp.hordes`;
-const arpLines = `${appId}.arp.lines`;
+const cmdNamespace = `${appId}${tribe}`;
+const emitChunk = `${cmdNamespace}.emit-chunk`;
+const emitEnd = `${cmdNamespace}.emit-end`;
+const startEmit = `${cmdNamespace}.start-emit`;
+const arp = `${cmdNamespace}.arp`;
+const arpHordes = `${cmdNamespace}.arp.hordes`;
+const arpLines = `${cmdNamespace}.arp.lines`;
 
 cmd[emitChunk] = function (msg, resp) {
   try {
