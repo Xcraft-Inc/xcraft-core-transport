@@ -1,6 +1,6 @@
 'use strict';
 
-const {getARP} = require('./lib/router.js');
+const {getARP, getLines} = require('./lib/router.js');
 const {getRouters} = require('.');
 
 let appId = '$';
@@ -22,7 +22,7 @@ const emitEnd = `${cmdNamespace}.emit-end`;
 const startEmit = `${cmdNamespace}.start-emit`;
 const arp = `${cmdNamespace}.arp`;
 const arpHordes = `${cmdNamespace}.arp.hordes`;
-const arpLines = `${cmdNamespace}.arp.lines`;
+const lines = `${cmdNamespace}.lines`;
 
 cmd[emitChunk] = function (msg, resp) {
   try {
@@ -114,33 +114,22 @@ cmd[arpHordes] = function (msg, resp) {
   resp.events.send(`transport.${arpHordes}.${msg.id}.finished`);
 };
 
-cmd[arpLines] = function (msg, resp) {
-  const _arp = getARP();
+cmd[lines] = function (msg, resp) {
+  const _lines = getLines();
   const data = [];
 
-  resp.log.info('ARP lines');
-  Object.entries(_arp)
-    .map(([backend, orcNames]) => ({
-      backend,
-      orcNames,
-    }))
-    .forEach(({backend, orcNames}) => {
-      Object.entries(orcNames).forEach(([orcName, route]) => {
-        resp.log.info(`${orcName}`);
-        if (route.lines) {
-          for (const lineId in route.lines) {
-            data.push({
-              backend,
-              lineId,
-              counter: route.lines[lineId],
-            });
-          }
-        }
-        resp.log.info.table(data);
+  resp.log.info('Lines');
+  Object.entries(_lines).forEach(([lineId, orcNames]) => {
+    Object.entries(orcNames).forEach(([orcName, refcount]) => {
+      data.push({
+        lineId,
+        orcName,
+        refcount,
       });
     });
-
-  resp.events.send(`transport.${arpLines}.${msg.id}.finished`);
+  });
+  resp.log.info.table(data);
+  resp.events.send(`transport.${lines}.${msg.id}.finished`);
 };
 
 cmd.status = function (msg, resp) {
@@ -188,15 +177,21 @@ cmd.xcraftMetrics = function (msg, resp) {
             hordes: route.hordes ? route.hordes.join(',') : '',
           },
         };
-        if (route.lines) {
-          const cnt = Object.keys(route.lines).length;
-          if (cnt > 0) {
-            metrics[`${arpKey}.${backend}.orcNames.${orcName}.lines`] = {
-              labels: {orcName},
-              total: Object.keys(route.lines).length,
-            };
-          }
-        }
+      });
+    });
+
+    /************************************************************************/
+
+    /* Lines table */
+    const linesKey = `${os.hostname()}.${appId}.transport.lines`;
+    const _lines = getLines();
+    metrics[`${linesKey}.total`] = Object.keys(_lines).length;
+    Object.entries(_lines).forEach(([lineId, orcNames]) => {
+      metrics[`${linesKey}.${lineId}.orcNames.total`] = Object.keys(
+        orcNames
+      ).length;
+      Object.entries(orcNames).forEach(([orcName, refcount]) => {
+        metrics[`${linesKey}.${lineId}.orcNames.${orcName}.total`] = refcount;
       });
     });
 
@@ -268,9 +263,9 @@ exports.xcraftCommands = function () {
         parallel: true,
         desc: 'show the hordes list in the ARP table',
       },
-      [arpLines]: {
+      [lines]: {
         parallel: true,
-        desc: 'show the lines in the ARP table',
+        desc: 'show the lines table',
       },
       status: {
         parallel: true,
