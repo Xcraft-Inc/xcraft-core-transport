@@ -162,7 +162,7 @@ cmd.xcraftMetrics = function (msg, resp) {
     /************************************************************************/
 
     /* ARP table */
-    const arpKey = `${os.hostname()}.${appId}.transport.arp`;
+    const arpKey = `${os.hostname()}.${cmdNamespace}.transport.arp`;
     const _arp = getARP();
     metrics[`${arpKey}.total`] = Object.keys(_arp).length;
     Object.entries(_arp).forEach(([backend, orcNames]) => {
@@ -183,7 +183,7 @@ cmd.xcraftMetrics = function (msg, resp) {
     /************************************************************************/
 
     /* Lines table */
-    const linesKey = `${os.hostname()}.${appId}.transport.lines`;
+    const linesKey = `${os.hostname()}.${cmdNamespace}.transport.lines`;
     const _lines = getLines();
     metrics[`${linesKey}.total`] = Object.keys(_lines).length;
     Object.entries(_lines).forEach(([lineId, orcNames]) => {
@@ -198,7 +198,7 @@ cmd.xcraftMetrics = function (msg, resp) {
     /************************************************************************/
 
     /* Routers */
-    const routerKey = `${os.hostname()}.${appId}.transport.routers`;
+    const routerKey = `${os.hostname()}.${cmdNamespace}.transport.routers`;
     const routers = getRouters();
     metrics[`${routerKey}.total`] = routers.length;
     routers.forEach((router) => {
