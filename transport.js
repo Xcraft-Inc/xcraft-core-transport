@@ -119,15 +119,17 @@ cmd[lines] = function (msg, resp) {
   const data = [];
 
   resp.log.info('Lines');
-  Object.entries(_lines).forEach(([lineId, orcNames]) => {
-    Object.entries(orcNames).forEach(([orcName, refcount]) => {
-      data.push({
-        lineId,
-        orcName,
-        refcount,
+  for (const __lines of Object.values(_lines)) {
+    Array.from(__lines.entries()).forEach(([lineId, orcNames]) => {
+      Array.from(orcNames.entries()).forEach(([orcName, refcount]) => {
+        data.push({
+          lineId,
+          orcName,
+          refcount,
+        });
       });
     });
-  });
+  }
   resp.log.info.table(data);
   resp.events.send(`transport.${lines}.${msg.id}.finished`);
 };
@@ -185,15 +187,17 @@ cmd.xcraftMetrics = function (msg, resp) {
     /* Lines table */
     const linesKey = `${os.hostname()}.${cmdNamespace}.transport.lines`;
     const _lines = getLines();
-    metrics[`${linesKey}.total`] = Object.keys(_lines).length;
-    Object.entries(_lines).forEach(([lineId, orcNames]) => {
-      metrics[`${linesKey}.${lineId}.orcNames.total`] = Object.keys(
-        orcNames
-      ).length;
-      Object.entries(orcNames).forEach(([orcName, refcount]) => {
-        metrics[`${linesKey}.${lineId}.orcNames.${orcName}.total`] = refcount;
+    for (const __lines of Object.values(_lines)) {
+      metrics[`${linesKey}.total`] = Object.keys(__lines).length;
+      Array.from(__lines.entries()).forEach(([lineId, orcNames]) => {
+        metrics[`${linesKey}.${lineId}.orcNames.total`] = Object.keys(
+          orcNames
+        ).length;
+        Array.from(orcNames.entries()).forEach(([orcName, refcount]) => {
+          metrics[`${linesKey}.${lineId}.orcNames.${orcName}.total`] = refcount;
+        });
       });
-    });
+    }
 
     /************************************************************************/
 
