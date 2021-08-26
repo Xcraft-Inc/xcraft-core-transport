@@ -26,7 +26,7 @@ const lines = `${cmdNamespace}.lines`;
 
 cmd[emitChunk] = function (msg, resp) {
   try {
-    resp.events.send(`${msg.data.streamId}.stream.chunked`, msg.data);
+    resp.events.send(`<${msg.data.streamId}>.stream.chunked`, msg.data);
     resp.events.send(`transport.${emitChunk}.${msg.id}.finished`);
   } catch (err) {
     resp.events.send(`transport.${emitChunk}.${msg.id}.error`, err);
@@ -35,7 +35,7 @@ cmd[emitChunk] = function (msg, resp) {
 
 cmd[emitEnd] = function (msg, resp) {
   try {
-    resp.events.send(`${msg.data.streamId}.stream.ended`);
+    resp.events.send(`<${msg.data.streamId}>.stream.ended`);
     resp.events.send(`transport.${emitEnd}.${msg.id}.finished`);
   } catch (err) {
     resp.events.send(`transport.${emitEnd}.${msg.id}.error`, err);
@@ -44,8 +44,8 @@ cmd[emitEnd] = function (msg, resp) {
 
 cmd[startEmit] = function (msg, resp) {
   try {
-    resp.events.send(`${msg.data.streamId}.stream.started`, {
-      appId: msg.data.appId,
+    resp.events.send(`<${msg.data.streamId}>.stream.started`, {
+      routingKey: msg.data.routingKey,
     });
     resp.events.send(`transport.${startEmit}.${msg.id}.finished`);
   } catch (err) {
