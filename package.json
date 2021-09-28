@@ -29,7 +29,6 @@
     "lodash": "^4.17.20",
     "tar-stream": "^2.1.0",
     "transit-js": "^0.8.846",
-    "transit-immutable-js": "github:Xcraft-Inc/transit-immutable-js",
     "uuid": "^8.3.2",
     "xcraft-axon": "^2.3.2",
     "xcraft-core-bus": "^5.0.0",
@@ -39,7 +38,8 @@
     "xcraft-core-log": "^2.0.0",
     "xcraft-core-probe": "^2.0.0",
     "xcraft-core-shredder": "^5.0.0",
-    "xcraft-core-utils": "^4.0.0"
+    "xcraft-core-utils": "^4.0.0",
+    "xcraft-transit-immutable-js": "^0.8.1"
   },
   "author": "Mathieu Schroeter",
   "license": "MIT",
