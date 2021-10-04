@@ -185,6 +185,7 @@ cmd.xcraftMetrics = function (msg, resp) {
     /************************************************************************/
 
     /* Lines table */
+    /*
     const linesKey = `${os.hostname()}.${cmdNamespace}.transport.lines`;
     const _lines = getLines();
     for (const __lines of Object.values(_lines)) {
@@ -198,6 +199,7 @@ cmd.xcraftMetrics = function (msg, resp) {
         });
       });
     }
+    */
 
     /************************************************************************/
 
