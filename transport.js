@@ -185,21 +185,25 @@ cmd.xcraftMetrics = function (msg, resp) {
     /************************************************************************/
 
     /* Lines table */
-    /*
     const linesKey = `${os.hostname()}.${cmdNamespace}.transport.lines`;
     const _lines = getLines();
-    for (const __lines of Object.values(_lines)) {
-      metrics[`${linesKey}.total`] = Object.keys(__lines).length;
-      Array.from(__lines.entries()).forEach(([lineId, orcNames]) => {
-        metrics[`${linesKey}.${lineId}.orcNames.total`] = Object.keys(
-          orcNames
-        ).length;
-        Array.from(orcNames.entries()).forEach(([orcName, refcount]) => {
-          metrics[`${linesKey}.${lineId}.orcNames.${orcName}.total`] = refcount;
-        });
-      });
+    const _local = _lines.local;
+    const _remote = _lines.remote;
+    const _pending = _lines.pending;
+
+    metrics[`${linesKey}.local.total`] = _local.size;
+    metrics[`${linesKey}.remote.total`] = _remote.size;
+    metrics[`${linesKey}.pending.total`] = _pending.size;
+
+    for (let [lineId, orcNames] of _remote) {
+      lineId = lineId.replace(/[.]/g, '');
+      metrics[`${linesKey}.remote.${lineId}.orcNames.total`] = orcNames.size;
+      for (const [orcName, refcount] of orcNames) {
+        metrics[
+          `${linesKey}.remote.${lineId}.orcNames.${orcName}.total`
+        ] = refcount;
+      }
     }
-    */
 
     /************************************************************************/
 
