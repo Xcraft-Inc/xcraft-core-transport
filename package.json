@@ -27,6 +27,7 @@
     "gigawatts": "^4.0.1",
     "immutable": "4.0.0-rc.14",
     "lodash": "^4.17.20",
+    "private-ip": "^2.3.3",
     "tar-stream": "^2.1.0",
     "transit-js": "^0.8.846",
     "uuid": "^8.3.2",
