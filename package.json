@@ -31,7 +31,7 @@
     "tar-stream": "^2.1.0",
     "transit-js": "^0.8.846",
     "uuid": "^8.3.2",
-    "xcraft-axon": "^2.3.2",
+    "xcraft-axon": "^2.4.0",
     "xcraft-core-bus": "^5.0.0",
     "xcraft-core-busclient": "^5.0.0",
     "xcraft-core-etc": "^3.0.0",
