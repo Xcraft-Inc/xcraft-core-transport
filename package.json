@@ -40,7 +40,7 @@
     "xcraft-core-probe": "^2.0.0",
     "xcraft-core-shredder": "^5.0.0",
     "xcraft-core-utils": "^4.0.0",
-    "xcraft-transit-immutable-js": "^0.8.1"
+    "xcraft-isomorphic-serialize": "^0.0.7"
   },
   "author": "Mathieu Schroeter",
   "license": "MIT",
