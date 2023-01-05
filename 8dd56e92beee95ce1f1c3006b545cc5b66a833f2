@@ -1,0 +1,9 @@
+[
+  {
+    "Module": "xcraft-core-transport",
+    "Version": "v4.5.0",
+    "Hash": "8dd56e9",
+    "Dev": "master",
+    "Prod": "4.5"
+  }
+]
