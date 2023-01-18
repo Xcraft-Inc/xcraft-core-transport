@@ -23,6 +23,7 @@ const startEmit = `${cmdNamespace}.start-emit`;
 const arp = `${cmdNamespace}.arp`;
 const arpHordes = `${cmdNamespace}.arp.hordes`;
 const lines = `${cmdNamespace}.lines`;
+const status = `${cmdNamespace}.status`;
 
 cmd[emitChunk] = function (msg, resp) {
   try {
@@ -134,26 +135,33 @@ cmd[lines] = function (msg, resp) {
   resp.events.send(`transport.${lines}.${msg.id}.finished`);
 };
 
-cmd.status = function (msg, resp) {
-  const status = getRouters().map((router) => router.status());
+cmd[status] = function (msg, resp) {
+  try {
+    const _status = getRouters().map((router) => router.status());
 
-  status.forEach((status, index) => {
-    resp.log.info(`transport ${index}`);
-    resp.log.info(`-> mode:${status.mode}`);
-    Object.keys(status.backends).forEach((name) => {
-      const subs = Object.keys(status.backends[name].subscriptions);
-      resp.log.info(`   [${name}] active:${status.backends[name].active}`);
-      if (subs.length) {
-        resp.log.info(`   [${name}] subscriptions:`);
-      }
-      subs.forEach((sub) => {
-        resp.log.info(`   -> ${sub}`);
+    _status.forEach((status, index) => {
+      resp.log.info(`transport ${index}`);
+      resp.log.info(`-> mode:${status.mode}`);
+      Object.keys(status.backends).forEach((name) => {
+        const subs = Object.keys(status.backends[name].subscriptions);
+        resp.log.info(`   [${name}] active:${status.backends[name].active}`);
+        if (subs.length) {
+          resp.log.info(`   [${name}] subscriptions:`);
+        }
+        subs.forEach((sub) => {
+          resp.log.info(`   -> ${sub}`);
+        });
       });
     });
-  });
 
-  resp.events.send('transport.status', status);
-  resp.events.send(`transport.status.${msg.id}.finished`);
+    resp.events.send(`transport.${status}.${msg.id}.finished`, status);
+  } catch (ex) {
+    resp.events.send(`transport.${status}.${msg.id}.error`, {
+      code: ex.code,
+      message: ex.message,
+      stack: ex.stack,
+    });
+  }
 };
 
 cmd.xcraftMetrics = function (msg, resp) {
