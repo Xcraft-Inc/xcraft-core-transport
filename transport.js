@@ -196,20 +196,24 @@ cmd.xcraftMetrics = function (msg, resp) {
     const linesKey = `${os.hostname()}.${cmdNamespace}.transport.lines`;
     const _lines = getLines();
     const _local = _lines.local;
-    const _remote = _lines.remote;
+    const _remotes = _lines.remotes;
     const _pending = _lines.pending;
 
     metrics[`${linesKey}.local.total`] = _local.size;
-    metrics[`${linesKey}.remote.total`] = _remote.size;
     metrics[`${linesKey}.pending.total`] = _pending.size;
 
-    for (let [lineId, orcNames] of _remote) {
-      lineId = lineId.replace(/[.]/g, '');
-      metrics[`${linesKey}.remote.${lineId}.orcNames.total`] = orcNames.size;
-      for (const [orcName, refcount] of orcNames) {
-        metrics[
-          `${linesKey}.remote.${lineId}.orcNames.${orcName}.total`
-        ] = refcount;
+    metrics[`${linesKey}.remotes.total`] = 0;
+    for (const [, lines] of _remotes) {
+      metrics[`${linesKey}.remotes.total`] += lines.size;
+
+      for (let [lineId, orcNames] of lines) {
+        lineId = lineId.replace(/[.]/g, '');
+        metrics[`${linesKey}.remotes.${lineId}.orcNames.total`] = orcNames.size;
+        for (const [orcName, refcount] of orcNames) {
+          metrics[
+            `${linesKey}.remotes.${lineId}.orcNames.${orcName}.total`
+          ] = refcount;
+        }
       }
     }
 
