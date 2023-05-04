@@ -5,7 +5,7 @@ const {OrderedMap} = require('immutable');
 const Shredder = require('xcraft-core-shredder');
 const helpers = require('../lib/helpers.js');
 
-describe('XcraftJSON', function () {
+describe('xcraft.transport.serializer', function () {
   const v1 = {
     _xcraftMessage: true,
     a: 1,
@@ -13,7 +13,7 @@ describe('XcraftJSON', function () {
     data: {c: 1, d: {}},
   };
 
-  it('#object', function () {
+  it('object', function () {
     const s = helpers.toXcraftJSON(v1)[0];
     const v = helpers.fromXcraftJSON(s)[0];
     expect(v).to.be.eql(v1);
@@ -28,7 +28,7 @@ describe('XcraftJSON', function () {
     data: OrderedMap({c: 1, d: {}}),
   };
 
-  it('#immutable', function () {
+  it('immutable', function () {
     const s = helpers.toXcraftJSON(v2)[0];
     const v = helpers.fromXcraftJSON(s)[0];
     delete v._xcraftRawMessage;
@@ -44,7 +44,7 @@ describe('XcraftJSON', function () {
     data: new Shredder(OrderedMap({c: 1, d: {}})),
   };
 
-  it('#shredder', function () {
+  it('shredder', function () {
     const s = helpers.toXcraftJSON(v3)[0];
     const v = helpers.fromXcraftJSON(s)[0];
     delete v._xcraftRawMessage;
@@ -60,7 +60,7 @@ describe('XcraftJSON', function () {
     data: {c: 1, d: {}, data: {e: 1, f: {}}},
   };
 
-  it('#object-nested', function () {
+  it('object-nested', function () {
     const s = helpers.toXcraftJSON(v4)[0];
     const v = helpers.fromXcraftJSON(s)[0];
     expect(v).to.be.eql(v4);
@@ -79,7 +79,7 @@ describe('XcraftJSON', function () {
     },
   };
 
-  it('#immutable-nested', function () {
+  it('immutable-nested', function () {
     const s = helpers.toXcraftJSON(v5)[0];
     const v = helpers.fromXcraftJSON(s)[0];
     delete v._xcraftRawMessage;
@@ -99,7 +99,7 @@ describe('XcraftJSON', function () {
     },
   };
 
-  it('#shredder-nested', function () {
+  it('shredder-nested', function () {
     const s = helpers.toXcraftJSON(v6)[0];
     const v = helpers.fromXcraftJSON(s)[0];
     delete v._xcraftRawMessage;
@@ -118,7 +118,7 @@ describe('XcraftJSON', function () {
     ],
   };
 
-  it('#object-array', function () {
+  it('object-array', function () {
     const s = helpers.toXcraftJSON(v7)[0];
     const v = helpers.fromXcraftJSON(s)[0];
     expect(v).to.be.eql(v7);
@@ -133,7 +133,7 @@ describe('XcraftJSON', function () {
     data: [OrderedMap({c: 1, d: {}}), OrderedMap({e: 1, f: {}})],
   };
 
-  it('#immutable-array', function () {
+  it('immutable-array', function () {
     const s = helpers.toXcraftJSON(v8)[0];
     const v = helpers.fromXcraftJSON(s)[0];
     delete v._xcraftRawMessage;
@@ -152,7 +152,7 @@ describe('XcraftJSON', function () {
     ],
   };
 
-  it('#shredder-array', function () {
+  it('shredder-array', function () {
     const s = helpers.toXcraftJSON(v9)[0];
     const v = helpers.fromXcraftJSON(s)[0];
     delete v._xcraftRawMessage;
@@ -174,7 +174,7 @@ describe('XcraftJSON', function () {
     },
   };
 
-  it('#object-array-nested', function () {
+  it('object-array-nested', function () {
     const s = helpers.toXcraftJSON(v10)[0];
     const v = helpers.fromXcraftJSON(s)[0];
     expect(v).to.be.eql(v10);
@@ -192,7 +192,7 @@ describe('XcraftJSON', function () {
     },
   };
 
-  it('#immutable-array-nested', function () {
+  it('immutable-array-nested', function () {
     const s = helpers.toXcraftJSON(v11)[0];
     const v = helpers.fromXcraftJSON(s)[0];
     delete v._xcraftRawMessage;
@@ -214,7 +214,7 @@ describe('XcraftJSON', function () {
     },
   };
 
-  it('#shredder-array-nested', function () {
+  it('shredder-array-nested', function () {
     const s = helpers.toXcraftJSON(v12)[0];
     const v = helpers.fromXcraftJSON(s)[0];
     delete v._xcraftRawMessage;

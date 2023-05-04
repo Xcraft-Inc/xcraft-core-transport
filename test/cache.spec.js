@@ -4,8 +4,8 @@ const {expect} = require('chai');
 const {extractIds} = require('../lib/helpers.js');
 const Cache = require('../lib/cache.js');
 
-describe('cache', function () {
-  it('#extractIds for a simple line', function () {
+describe('xcraft.transport.cache', function () {
+  it('extractIds for a simple line', function () {
     const ids = extractIds('albert@levert::my@entity.<with-a-line>');
 
     expect(ids[0]).to.be.equal('_');
@@ -14,7 +14,7 @@ describe('cache', function () {
     expect(ids[3]).to.be.equal('my@entity');
   });
 
-  it('#extractIds for line with id', function () {
+  it('extractIds for line with id', function () {
     const ids = extractIds('albert@levert::my@entity.<its@an@id>');
 
     expect(ids[0]).to.be.equal('_');
@@ -23,7 +23,7 @@ describe('cache', function () {
     expect(ids[3]).to.be.equal('its@an@id');
   });
 
-  it('#extractIds for command', function () {
+  it('extractIds for command', function () {
     const ids = extractIds(
       'albert@levert::action.abc-abc-abc-abc-abc.finished'
     );
@@ -33,7 +33,7 @@ describe('cache', function () {
     expect(ids[2]).to.be.equal('.abc-abc-abc-abc-abc.');
   });
 
-  it('#matches global', function () {
+  it('matches global', function () {
     const cache = new Cache();
     let r;
 
@@ -50,7 +50,7 @@ describe('cache', function () {
     expect(cache._cache.size).to.be.eql(1);
   });
 
-  it('#matches id', function () {
+  it('matches id', function () {
     const cache = new Cache();
     let r;
     let id;
