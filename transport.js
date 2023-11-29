@@ -289,7 +289,7 @@ exports.xcraftCommands = function () {
         parallel: true,
         desc: 'show the lines table',
       },
-      status: {
+      [status]: {
         parallel: true,
         desc: 'show the status of all transports',
       },
