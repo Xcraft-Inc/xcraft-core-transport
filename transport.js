@@ -45,7 +45,7 @@ cmd[emitEnd] = function (msg, resp) {
 
 cmd[startEmit] = function (msg, resp) {
   try {
-    resp.events.send(`<${msg.data.streamId}>.stream.started`, {
+    resp.events.send(`${msg.data.streamId}.stream.started.orcished`, {
       routingKey: msg.data.routingKey,
     });
     resp.events.send(`transport.${startEmit}.${msg.id}.finished`);
