@@ -18,6 +18,12 @@ module.exports = [
     default: [],
   },
   {
+    type: 'confirm',
+    name: 'requestClientCert',
+    message: 'request client certificates',
+    default: false,
+  },
+  {
     type: 'input',
     name: 'certsPath',
     message: 'client certificates location',
