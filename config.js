@@ -29,4 +29,10 @@ module.exports = [
     message: 'client certificates location',
     default: path.join(xConfig.xcraftRoot, 'var/certs'),
   },
+  {
+    type: 'input',
+    name: 'keysPath',
+    message: 'client private keys location',
+    default: path.join(xConfig.xcraftRoot, 'var/keys'),
+  },
 ];
