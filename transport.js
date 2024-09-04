@@ -1,19 +1,13 @@
 'use strict';
 
+const xHost = require('xcraft-core-host');
 const {getARP, getLines} = require('./lib/router.js');
 const {getRouters} = require('.');
 
 let appId = '$';
 let tribe = '';
-try {
-  const xHost = require('xcraft-core-host');
-  appId = xHost.appId;
-  tribe = xHost.appArgs().tribe ? `-${xHost.appArgs().tribe}` : '';
-} catch (ex) {
-  if (ex.code !== 'MODULE_NOT_FOUND') {
-    throw ex;
-  }
-}
+appId = xHost.appId;
+tribe = xHost.appArgs().tribe ? `-${xHost.appArgs().tribe}` : '';
 
 const cmd = {};
 const cmdNamespace = `${appId}${tribe}`;

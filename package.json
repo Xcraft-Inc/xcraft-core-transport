@@ -37,6 +37,7 @@
     "xcraft-core-busclient": "^5.0.0",
     "xcraft-core-etc": "^3.0.0",
     "xcraft-core-fs": "^2.1.0",
+    "xcraft-core-host": "^3.0.0",
     "xcraft-core-log": "^2.0.0",
     "xcraft-core-probe": "^2.0.0",
     "xcraft-core-shredder": "^5.0.0",
@@ -50,8 +51,7 @@
   },
   "homepage": "https://github.com/Xcraft-Inc/xcraft-core-transport#readme",
   "optionalDependencies": {
-    "xcraft-core-horde": "^3.0.0",
-    "xcraft-core-host": "^3.0.0"
+    "xcraft-core-horde": "^3.0.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
