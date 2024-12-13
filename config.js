@@ -18,6 +18,12 @@ module.exports = [
     default: [],
   },
   {
+    type: 'checkbox',
+    name: 'axon.clientOnly',
+    message: 'only client connections (axon)',
+    default: false,
+  },
+  {
     type: 'confirm',
     name: 'requestClientCert',
     message: 'request client certificates',
