@@ -6,6 +6,11 @@ const Router = require('../lib/router.js');
 const xLog = require('xcraft-core-log')('test', null);
 xLog.setVerbosity(2);
 
+const etc = require('xcraft-core-etc')();
+const config = etc.load('xcraft-core-transport');
+config.backends = ['ee', 'axon'];
+config.axon = {clientOnly: false};
+
 describe('xcraft.transport.router', function () {
   describe('pushpull', function () {
     const server = new Router(null, 'pull', xLog);
