@@ -32,7 +32,7 @@ describe('xcraft.transport.router', function () {
       });
 
       server.start({host: '127.0.0.1', port: 3334}, () => {
-        clientEe.connect('ee', {}, () => {
+        clientEe.connect('ee', {port: 3334, host: '127.0.0.1'}, () => {
           clientEe.send('test-ee', {});
         });
 
