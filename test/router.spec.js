@@ -1,5 +1,6 @@
 'use strict';
 
+require('xcraft-core-goblin/lib/test.js');
 const {expect} = require('chai');
 const Router = require('../lib/router.js');
 
