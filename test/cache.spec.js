@@ -44,9 +44,9 @@ describe('xcraft.transport.cache', function () {
     r = /c/;
     cache.set(extractIds('c')[0], r.toString(), r);
 
-    expect(cache.matches('a')).to.be.true;
-    expect(cache.matches('b')).to.be.true;
-    expect(cache.matches('c')).to.be.true;
+    expect(cache.matches('a')).is.equals(true);
+    expect(cache.matches('b')).is.equals(true);
+    expect(cache.matches('c')).is.equals(true);
     expect(cache._cache.size).to.be.eql(1);
   });
 
@@ -69,11 +69,11 @@ describe('xcraft.transport.cache', function () {
     id = ids[ids.length - 1];
     cache.set(id, r.toString(), r);
 
-    expect(cache.matches('test::a@a')).to.be.true;
-    expect(cache.matches('test:a@z')).to.be.false;
-    expect(cache.matches('test::bb')).to.be.true;
-    expect(cache.matches('test:bb')).to.be.false;
-    expect(cache.matches('test')).to.be.false;
+    expect(cache.matches('test::a@a')).is.equals(true);
+    expect(cache.matches('test:a@z')).is.equals(false);
+    expect(cache.matches('test::bb')).is.equals(true);
+    expect(cache.matches('test:bb')).is.equals(false);
+    expect(cache.matches('test')).is.equals(false);
     expect(cache._cache.size).to.be.eql(3);
   });
 });
