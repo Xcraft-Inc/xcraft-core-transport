@@ -38,7 +38,7 @@
     "xcraft-core-etc": "^3.0.0",
     "xcraft-core-fs": "^2.1.0",
     "xcraft-core-host": "^3.0.0",
-    "xcraft-core-log": "^2.0.0",
+    "xcraft-core-log": "^2.2.0",
     "xcraft-core-probe": "^2.0.0",
     "xcraft-core-shredder": "^5.0.0",
     "xcraft-core-utils": "^4.0.0",
