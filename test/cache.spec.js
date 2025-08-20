@@ -76,4 +76,20 @@ describe('xcraft.transport.cache', function () {
     expect(cache.matches('test')).is.equals(false);
     expect(cache._cache.size).to.be.eql(3);
   });
+
+  it('extractIds for ', function () {
+    const ids = extractIds('albert@levert::action.bragon@*-done');
+
+    expect(ids[0]).to.be.equal('_');
+    expect(ids[1]).to.be.equal('albert@levert');
+    expect(ids.length).to.be.equal(2);
+
+    const regex = /.*::action.bragon@.*-done/;
+    const cache = new Cache();
+    cache.set('_', regex.toString(), regex);
+
+    expect(
+      cache.matches('maurice@gertrude::action.bragon@pelisse-done')
+    ).is.equals(true);
+  });
 });
