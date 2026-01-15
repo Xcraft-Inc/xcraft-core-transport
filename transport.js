@@ -70,8 +70,8 @@ cmd[arp] = function (msg, resp) {
       );
     });
 
-  resp.log.info('ARP routing entries');
-  resp.log.info.table(data);
+  resp.log.dbg('ARP routing entries');
+  resp.log.dbg.table(data);
 
   resp.events.send(`transport.${arp}.${msg.id}.finished`);
 };
@@ -103,8 +103,8 @@ cmd[arpHordes] = function (msg, resp) {
       });
     });
 
-  resp.log.info('ARP hordes');
-  resp.log.info.table(data);
+  resp.log.dbg('ARP hordes');
+  resp.log.dbg.table(data);
 
   resp.events.send(`transport.${arpHordes}.${msg.id}.finished`);
 };
@@ -113,7 +113,7 @@ cmd[lines] = function (msg, resp) {
   const _lines = getLines();
   const data = [];
 
-  resp.log.info('Lines');
+  resp.log.dbg('Lines');
   for (const __lines of Object.values(_lines)) {
     Array.from(__lines.entries()).forEach(([lineId, orcNames]) => {
       Array.from(orcNames.entries()).forEach(([orcName, refcount]) => {
@@ -125,7 +125,7 @@ cmd[lines] = function (msg, resp) {
       });
     });
   }
-  resp.log.info.table(data);
+  resp.log.dbg.table(data);
   resp.events.send(`transport.${lines}.${msg.id}.finished`);
 };
 
@@ -134,16 +134,16 @@ cmd[status] = function (msg, resp) {
     const _status = getRouters().map((router) => router.status());
 
     _status.forEach((status, index) => {
-      resp.log.info(`transport ${index}`);
-      resp.log.info(`-> mode:${status.mode}`);
+      resp.log.dbg(`transport ${index}`);
+      resp.log.dbg(`-> mode:${status.mode}`);
       Object.keys(status.backends).forEach((name) => {
         const subs = Object.keys(status.backends[name].subscriptions);
-        resp.log.info(`   [${name}] active:${status.backends[name].active}`);
+        resp.log.dbg(`   [${name}] active:${status.backends[name].active}`);
         if (subs.length) {
-          resp.log.info(`   [${name}] subscriptions:`);
+          resp.log.dbg(`   [${name}] subscriptions:`);
         }
         subs.forEach((sub) => {
-          resp.log.info(`   -> ${sub}`);
+          resp.log.dbg(`   -> ${sub}`);
         });
       });
     });
