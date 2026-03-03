@@ -41,4 +41,10 @@ module.exports = [
     message: 'client private keys location',
     default: path.join(xConfig.xcraftRoot, 'var/keys'),
   },
+  {
+    type: 'input',
+    name: 'streamer.timeout',
+    message: 'Default streamer timeout',
+    default: 120000,
+  },
 ];
