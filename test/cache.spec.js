@@ -92,4 +92,58 @@ describe('xcraft.transport.cache', function () {
       cache.matches('maurice@gertrude::action.bragon@pelisse-done')
     ).is.equals(true);
   });
+
+  it('matches on empty cache', function () {
+    const cache = new Cache();
+    expect(cache.matches('a@b::x')).to.be.equal(false);
+  });
+
+  it('map on empty cache', function () {
+    const cache = new Cache();
+    expect(cache.map('a@b::x', () => 1)).to.be.eql([]);
+  });
+
+  it('map returns values in traversal order (specific before global)', function () {
+    const cache = new Cache();
+    const rGlobal = /::x/;
+    const rSpecific = /a@b::x/;
+    cache.set('_', rGlobal.toString(), rGlobal);
+    cache.set('a@b', rSpecific.toString(), rSpecific);
+
+    const res = cache.map('a@b::x', (id) => id);
+    expect(res).to.be.eql(['a@b', '_']);
+  });
+
+  it('map passes id and key to the predicate', function () {
+    const cache = new Cache();
+    const r = /a@b::x/;
+    cache.set('a@b', r.toString(), r);
+
+    const res = cache.map('a@b::x', (id, key) => `${id}|${key}`);
+    expect(res).to.be.eql([`a@b|${r.toString()}`]);
+  });
+
+  it('del on unknown id does not throw', function () {
+    const cache = new Cache();
+    expect(() => cache.del('unknown', 'key')).to.not.throw();
+  });
+
+  it('del removes the id when its last regex is removed', function () {
+    const cache = new Cache();
+    const r = /a/;
+    cache.set('_', r.toString(), r);
+    cache.del('_', r.toString());
+    expect(cache._cache.size).to.be.equal(0);
+    expect(cache.matches('a')).to.be.equal(false);
+  });
+
+  it('global flag does not make results stateful', function () {
+    const cache = new Cache();
+    const r = /a/g;
+    cache.set('_', r.toString(), r);
+    expect(cache.matches('a')).to.be.equal(true);
+    expect(cache.matches('a')).to.be.equal(true);
+    expect(cache.map('a', () => 1)).to.be.eql([1]);
+    expect(cache.map('a', () => 1)).to.be.eql([1]);
+  });
 });
