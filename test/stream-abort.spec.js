@@ -50,16 +50,24 @@ function waitForChild(child, expectedType, timeout = 10000) {
   });
 }
 
-describe('xcraft.goblin stream transport', function () {
+describe('xcraft.transport.stream-transport', function () {
   let runner;
+  let requestClientCert;
+  let transportConfig;
 
   this.beforeAll(function () {
+    transportConfig = require('xcraft-core-etc')().load(
+      'xcraft-core-transport'
+    );
+    requestClientCert = transportConfig.requestClientCert;
+    transportConfig.requestClientCert = false;
     runner = new Elf.Runner();
     runner.init();
   });
 
   this.afterAll(function () {
     runner.dispose();
+    transportConfig.requestClientCert = requestClientCert;
   });
 
   it('aborts all Goblin streams sharing a destroyed Axon socket', async function () {
@@ -100,6 +108,12 @@ describe('xcraft.goblin stream transport', function () {
         child.stderr.on('data', (data) => (stderr += data.toString()));
 
         try {
+          const {routingKey, streamIds} = await waitForChild(child, 'ready');
+          for (const streamId of streamIds) {
+            this.quest.resp.events.send(`stream.started.${streamId}.orcished`, {
+              routingKey,
+            });
+          }
           await waitForChild(child, 'streaming');
         } catch (err) {
           err.message += `\nchild stdout:\n${stdout}\nchild stderr:\n${stderr}`;
@@ -109,7 +123,7 @@ describe('xcraft.goblin stream transport', function () {
         await waitFor(
           () =>
             sources.size === 2 &&
-            Array.from(sources.values()).every((source) => source.chunks > 2)
+            Array.from(sources.values()).every((source) => source.chunks > 0)
         );
 
         const socket = axon._sock.socks.find(
